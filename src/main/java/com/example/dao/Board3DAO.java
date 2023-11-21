@@ -15,8 +15,8 @@ public class Board3DAO {
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 
-	private final String BOARD3_INSERT = "insert into BOARD3 (title, writer, content) values (?,?,?)";
-	private final String BOARD3_UPDATE = "update BOARD3 set title=?, writer=?, content=? where seq=?";
+	private final String BOARD3_INSERT = "insert into BOARD3 (category, title, writer, content) values (?,?,?,?)";
+	private final String BOARD3_UPDATE = "update BOARD3 set category=?, title=?, writer=?, content=? where seq=?";
 	private final String BOARD3_DELETE = "delete from BOARD3  where seq=?";
 	private final String BOARD3_GET = "select * from BOARD3  where seq=?";
 	private final String BOARD3_LIST = "select * from BOARD3 order by seq desc";
@@ -26,9 +26,10 @@ public class Board3DAO {
 		try {
 			conn = JDBCUtil.getConnection();
 			stmt = conn.prepareStatement(BOARD3_INSERT);
-			stmt.setString(1, vo.getTitle());
-			stmt.setString(2, vo.getWriter());
-			stmt.setString(3, vo.getContent());
+			stmt.setString(1, vo.getCategory());
+			stmt.setString(2, vo.getTitle());
+			stmt.setString(3, vo.getWriter());
+			stmt.setString(4, vo.getContent());
 			stmt.executeUpdate();
 			return 1;
 		} catch (Exception e) {
@@ -54,13 +55,14 @@ public class Board3DAO {
 		try {
 			conn = JDBCUtil.getConnection();
 			stmt = conn.prepareStatement(BOARD3_UPDATE);
-			stmt.setString(1, vo.getTitle());
-			stmt.setString(2, vo.getWriter());
-			stmt.setString(3, vo.getContent());
-			stmt.setInt(4, vo.getSeq());
+			stmt.setString(1, vo.getCategory());
+			stmt.setString(2, vo.getTitle());
+			stmt.setString(3, vo.getWriter());
+			stmt.setString(4, vo.getContent());
+			stmt.setInt(5, vo.getSeq());
 			
 			
-			System.out.println(vo.getTitle() + "-" + vo.getWriter() + "-" + vo.getContent() + "-" + vo.getSeq());
+			System.out.println(vo.getCategory() + "-" + vo.getTitle() + "-" + vo.getWriter() + "-" + vo.getContent() + "-" + vo.getSeq());
 			stmt.executeUpdate();
 			return 1;
 			
@@ -80,6 +82,7 @@ public class Board3DAO {
 			rs = stmt.executeQuery();
 			if(rs.next()) {
 				one.setSeq(rs.getInt("seq"));
+				one.setCategory(rs.getString("category"));
 				one.setTitle(rs.getString("title"));
 				one.setWriter(rs.getString("writer"));
 				one.setContent(rs.getString("content"));
@@ -102,6 +105,7 @@ public class Board3DAO {
 			while(rs.next()) {
 				Board3VO one = new Board3VO();
 				one.setSeq(rs.getInt("seq"));
+				one.setCategory(rs.getString("category"));
 				one.setTitle(rs.getString("title"));
 				one.setWriter(rs.getString("writer"));
 				one.setContent(rs.getString("content"));
